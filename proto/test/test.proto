@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package proto.testing;
+
+option go_package = "proto/test/testpb";
+
+import "google/api/annotations.proto";
+import "google/rpc/code.proto";
+
+service TestService {
+  rpc HealthCheck(HealthCheckRequest) returns (HealthCheckResponse) {
+    option (google.api.http) = {
+      get : "/healthcheck"
+    };
+  }
+  rpc Ping(PingRequest) returns (PingResponse) {
+    option (google.api.http) = {
+      post : "/ping"
+      body : "*"
+    };
+  }
+}
+
+message HealthCheckRequest {}
+message HealthCheckResponse {}
+
+message PingRequest {
+  string value = 1;
+  int32 sleep_time_ms = 2;
+  google.rpc.Code status_code_returned = 3;
+}
+
+message PingResponse { string value = 1; }
